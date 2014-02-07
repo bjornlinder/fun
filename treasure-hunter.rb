@@ -42,7 +42,6 @@ def generate
     end
   end
 end
-
 #how would I best avoid initializing the artifact arrays & strings each time this method is called?
 #All I can think of right now is using more global variables.
 def artifact type 
@@ -51,7 +50,7 @@ def artifact type
   civs=["Mayan","Greek","Chinese","Collector's Edition","Persian","Roman"]
   animals=["Aaron the Aardvark","Wile E. Coyote","killer rabbit","Chupacabra","Tobbits the Hobbit","Pikachu","Ling-Ling"]
   if type=="cheese"
-    return cheeses[rand(10)]
+    return cheeses[rand(10)] #change to cheeses.length
   elsif type=="bones"
     return bones[rand(7)]
   elsif type=="coin"
@@ -108,7 +107,7 @@ def move dir
     puts "DOES NOT COMPUTE. REPORT CODE 00000000001011101111 TO ADMINISTRATOR."
     return false
   end
-  if $location[0]>$dimensions[0]||$location[0]<0||$location[1]<0||$location[1]>$dimensions[1]
+  if $location[0]>=$dimensions[0]||$location[0]<0||$location[1]<0||$location[1]>=$dimensions[1]
     abort dir
     return false
   else
@@ -122,29 +121,33 @@ def abort dir
   move reverse[dir]
 end
     
-def search
+def dig
   item=$grid[$location]
   if $location[2]>2
     puts "You find hard rock and can't dig any deeper. Try 'move'."
     return
   elsif item=="dug"
     $location[2]=$location[2]+1
-   #For troubleshooting: puts "grid: #{$grid}; location: #{$location} and grid location:       #{$grid[$location]}"
-    search
+   #For troubleshooting: grid: #{$grid};
+   #puts " location: #{$location} and grid location: #{$grid[$location]}"
+   dig
   else
     puts output item    
-    $grid[$location]="dug"  #I suspect this line is where the trouble is. It seems to change more keys in the hash than its supposed to.
+    $grid[$location]="dug"
   end
 end
 
 puts "Type 'dig' to search for buried treasure, 'move (n/s/e/w)' to move in the given direction, or 'done' to exit the game."
 while true
+  puts $grid
   input=gets.chomp.downcase
   if input=="done"
     puts "Have a nice day!"
     exit
+  elsif input=="grid"
+   display
   elsif input.include? "dig"
-    search
+    dig
     puts "Would you like to dig or move?"
   elsif ((input.include? "move") && (input[-2,2]!="ve"))
     dir=input[-1,1]
@@ -153,5 +156,5 @@ while true
     end
   else
     puts "Please type 'dig', 'move (n/s/e/w)', or 'done'."
-  end
+   end
 end
