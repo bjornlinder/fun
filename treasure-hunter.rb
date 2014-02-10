@@ -85,7 +85,7 @@ def intro
   puts "How large would you like the gameboard to be?
   Please enter the desired board dimensions in the format 'x.y' (for example, '5.7')."
   $dimensions=gets.chomp.split(".").map{|s| s.to_i}
-  unless ($dimensions[0]>0&&$dimensions[1]>0)
+  unless $dimensions.length==2&&($dimensions[0]>0&&$dimensions[1]>0) 
     puts "It's really not supposed to be that hard. Try again."
     intro
   end
@@ -115,6 +115,28 @@ def move dir
   end
 end
 
+def display #displays the grid in current state
+  display=[]
+  for i in 0..$dimensions[0]-1
+    row=[]
+    for j in 0..$dimensions[1]-1
+      current=$grid[[i,j,0]]
+      if [i,j]==[$location[0],$location[1]]
+        row.push("X")
+        #elsif current=="dug"   Not fully working yet
+      #  row.push(current)
+      else
+        row.push(0)
+      end
+    end
+    display[i]=row
+    #puts row.inspect
+  end
+  display.reverse_each do |i|
+    puts i.inspect
+  end
+end
+
 def abort dir
   reverse={"e"=>"w","w"=>"e","n"=>"s","s"=>"n"}
   puts "You have reached the edge of the world. You barely catch youself before falling off."
@@ -137,14 +159,14 @@ def dig
   end
 end
 
-puts "Type 'dig' to search for buried treasure, 'move (n/s/e/w)' to move in the given direction, or 'done' to exit the game."
+puts "Type 'dig' to search for buried treasure, 'map' to display your location,'move (n/s/e/w)' to move in the given direction, or 'done' to exit the game."
 while true
-  puts $grid
+  #puts $grid
   input=gets.chomp.downcase
   if input=="done"
     puts "Have a nice day!"
     exit
-  elsif input=="grid"
+  elsif input=="map"
    display
   elsif input.include? "dig"
     dig
