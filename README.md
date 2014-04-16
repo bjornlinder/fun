@@ -9,3 +9,9 @@ There is one bug in the Treasure Hunter game I have thus far been unable to figu
 2-7-14
 
 The issue described above was fixed by upgrading Ruby to version 2.1. The grid hash also works with 1.9.3, but has an issue with Ruby 1.8.7. Next thing to work on will be a cleaner map print method.
+
+4-16-14
+
+Game has been rewritten using Javascript for tracking player and grid information, and ruby for server side code returning the artifacts. See game at http://bjorn-linder.herokuapp.com/treasure-hunter
+Ruby code: https://github.com/bjornlinder/personal_website/blob/master/treasure-hunter.rb
+Javascript code: https://github.com/bjornlinder/personal_website/blob/master/public/js/treasurehunter.js
